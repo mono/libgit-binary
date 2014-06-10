@@ -1,4 +1,4 @@
 libgit-binary
 =============
 
-Binaries for libgit and libgit-sharp
+Binaries for libgit2 for Mac.
