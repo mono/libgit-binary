@@ -83,10 +83,27 @@ function Assert-Consistent-Naming($expected, $path) {
     Ensure-Property $expected $dll.VersionInfo.OriginalFilename "VersionInfo.OriginalFilename" $dll.Fullname
 }
 
+function Check-Newer-Binaries {
+    $old = Get-Item "$x86Directory\*.dll"
+    $oldSha = $old.Name.Substring("git2-".Length).Substring(0, 7)
+    try {
+        Push-Location $libgit2Directory
+        & git merge-base --is-ancestor $sha $oldSha
+        if ($LastExitCode -eq 0) {
+            Write-Output "Binaries are newer in the output directory."
+            Exit
+        }
+    } finally {
+        Pop-Location
+    }
+}
+
 if (Test-Path(Join-Path $x86Directory "$binaryFilename.dll")) {
-    Write-Output "Binaries don't need rebuilding!"
+    Write-Output "Binaries are the same as in output directory."
     Exit
 }
+
+Check-Newer-Binaries
 
 try {
     Push-Location $libgit2Directory
@@ -110,9 +127,12 @@ try {
     }
     Run-Command { & mkdir -fo "$x86Directory" }
     Run-Command { & copy -fo "$libgit2Directory\build\$configuration\*" -Destination $x86Directory -Exclude *.lib }
+    Run-Command { & git stash save }
+    Run-Command -Fatal { & git pull }
+    Check-Newer-Binaries
+    Run-Command -Fatal { & git stash pop }
     Run-Command -Fatal { & git add "$x86Directory" }
     Run-Command -Fatal { & git commit -m "Bumping Windows libgit2 to $sha" }
-    Run-Command -Fatal { & git pull --rebase }
     Run-Command -Fatal { & git push }
 
     #Write-Output "Building 64-bit..."
