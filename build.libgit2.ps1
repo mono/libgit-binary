@@ -110,7 +110,10 @@ try {
     }
     Run-Command { & mkdir -fo "$x86Directory" }
     Run-Command { & copy -fo "$libgit2Directory\build\$configuration\*" -Destination $x86Directory -Exclude *.lib }
-    Run-Command { & git add "$x86Directory" }
+    Run-Command -Fatal { & git add "$x86Directory" }
+    Run-Command -Fatal { & git commit -m "Bumping Windows libgit2 to $sha" }
+    Run-Command -Fatal { & git pull --rebase }
+    Run-Command -Fatal { & git push }
 
     #Write-Output "Building 64-bit..."
     #cd ..
