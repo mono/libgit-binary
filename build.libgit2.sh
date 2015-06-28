@@ -103,7 +103,7 @@ then
 fi
 
 cp "external/libgit2/build/libgit2-$SHORTSHA.$LIBEXT" $PKGPATH/
-install_name_tool -change libssh2.1.dylib @loader_path/libssh2.dylib $PKGPATH/libssh2.dylib
+install_name_tool -change libssh2.1.dylib @loader_path/libssh2.dylib "$PKGPATH/libgit2-$SHORTSHA.$LIBEXT"
 
 git stash save
 git pull
