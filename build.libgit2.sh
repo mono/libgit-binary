@@ -30,13 +30,16 @@ function check_newer_binaries {
 if [ "$OS" == "Darwin" ]
 then
 	BUILDDIR=mac
+	PKGPATH="./mac"
+	LIBEXT="dylib"
 else
 	BUILDDIR=external/libgit2/build
+	LIBEXT="so"
 fi
 
 if [[ -d "$BUILDDIR" ]]
 then
-    if [[ "$BUILDDIR/libgit2-${SHORTSHA}.*" == "$BUILDDIR/libgit2-${SHORTSHA}." ]]
+    if [[ -f "$BUILDDIR/libgit2-${SHORTSHA}.${LIBEXT}" ]]
     then
         echo "Binaries are the same as in output directory."
         exit 0
@@ -45,9 +48,6 @@ fi
 
 if [ "$OS" == "Darwin" ]; then
 	check_newer_binaries
-
-	PKGPATH="./mac"
-	LIBEXT="dylib"
 
 	mkdir -p external/libssh2/build
 	pushd external/libssh2/build
