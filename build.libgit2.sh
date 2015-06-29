@@ -1,7 +1,10 @@
 #!/bin/bash
 
 CURDIR=$(pwd)
-LIBGIT2SHA=`cat ./libgit2_hash.txt`
+pushd external/libgit2
+LIBGIT2SHA=$(git rev-parse HEAD)
+popd
+echo $LIBGIT2SHA > libgit2_hash.txt
 SHORTSHA=${LIBGIT2SHA:0:7}
 OS=$(uname -s)
 
@@ -101,6 +104,16 @@ if [ "$OS" != "Darwin" ]
 then
 	exit 0
 fi
+
+for i in $PKGPATH/*;
+do
+	if [[ "$i" == "$PKGPATH/libssh2.dylib" || "$i" == "$PKGPATH/libgit2-$SHORTSHA.$LIBEXT" ]]
+	then
+		continue
+	fi
+
+	git rm $i
+done
 
 cp "external/libgit2/build/libgit2-$SHORTSHA.$LIBEXT" $PKGPATH/
 install_name_tool -change libssh2.1.dylib @loader_path/libssh2.dylib "$PKGPATH/libgit2-$SHORTSHA.$LIBEXT"
