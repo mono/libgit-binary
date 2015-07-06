@@ -55,7 +55,7 @@ if [ "$OS" == "Darwin" ]; then
 	cmake -DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo \
 	      -DBUILD_SHARED_LIBS:BOOL=ON \
 	      -DENABLE_ZLIB_COMPRESSION:BOOL=ON \
-	      -DCMAKE_OSX_ARCHITECTURES="i386" \
+	      -DCMAKE_OSX_ARCHITECTURES="i386;x86_64" \
 	      -DCMAKE_SKIP_RPATH=TRUE \
 	      ..
 	cmake --build .
@@ -78,7 +78,7 @@ then
 	      -DBUILD_CLAR:BOOL=OFF \
 	      -DENABLE_TRACE=ON \
 	      -DLIBGIT2_FILENAME=git2-$SHORTSHA \
-	      -DCMAKE_OSX_ARCHITECTURES="i386" \
+	      -DCMAKE_OSX_ARCHITECTURES="i386;x86_64" \
 	      -DCMAKE_SKIP_RPATH=TRUE \
 	      -DLIBSSH2_FOUND=TRUE \
 	      -DLIBSSH2_INCLUDE_DIRS="$CURDIR/external/libssh2/include" \
@@ -92,7 +92,6 @@ else
 	      -DUSE_SSH=ON \
 	      -DENABLE_TRACE=ON \
 	      -DLIBGIT2_FILENAME=git2-$SHORTSHA \
-	      -DCMAKE_OSX_ARCHITECTURES="i386" \
 	      -DCMAKE_SKIP_RPATH=TRUE \
 	      ..
 fi
