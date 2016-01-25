@@ -85,6 +85,7 @@ then
 	      -DLIBSSH2_LIBRARY_DIRS="$CURDIR/external/libssh2/build/src" \
 	      -DSSH_LIBRARIES="ssh2" \
 	      -DHAVE_LIBSSH2_MEMORY_CREDENTIALS=TRUE \
+	      -DUSE_NSEC=ON \
 	      ..
 else
 	cmake -DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo \

@@ -114,7 +114,7 @@ try {
     Run-Command { & remove-item build -recurse -force }
     Run-Command { & mkdir build }
     cd build
-    Run-Command -Fatal { & $cmake -G "Visual Studio $vs" -D ENABLE_TRACE=ON -D "LIBGIT2_FILENAME=$binaryFilename" -DSTDCALL=ON -D "EMBED_SSH_PATH=../libssh2" -DBUILD_CLAR:BOOL=OFF \ .. }
+    Run-Command -Fatal { & $cmake -G "Visual Studio $vs" -D ENABLE_TRACE=ON -D "LIBGIT2_FILENAME=$binaryFilename" -DUSE_NSEC=ON -DSTDCALL=ON -D "EMBED_SSH_PATH=../libssh2" -DBUILD_CLAR:BOOL=OFF \ .. }
     Run-Command -Fatal { & $cmake --build . --config $configuration }
     cd $configuration
     Assert-Consistent-Naming "$binaryFilename.dll" "*.dll"
