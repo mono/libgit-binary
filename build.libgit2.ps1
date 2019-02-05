@@ -6,7 +6,7 @@
 #>
 
 Param(
-    [string]$vs = '12'
+    [string]$vs = '15'
 )
 
 Set-StrictMode -Version Latest
